@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fraud-detection-config
+data:
+  LOG_LEVEL: "INFO"
+  MODEL_PATH: artifacts/fraud_detection.pkl
