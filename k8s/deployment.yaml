@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-detection-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fraud-detection
+  template:
+    metadata:
+      labels:
+        app: fraud-detection
+    spec:
+      containers:
+        - name: api
+          image: fraud-detection-service:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef: {name: fraud-detection-config}
+            - secretRef: {name: fraud-detection-service}
+          startupProbe:
+            httpGet: {path: /health, port: 8000}
+            failureThreshold: 30
+            periodSeconds: 2
+          livenessProbe:
+            httpGet: {path: /health, port: 8000}
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: {path: /ready, port: 8000}
+            periodSeconds: 5
+          resources:
+            requests: {cpu: 100m, memory: 512Mi}
+            limits: {cpu: "1", memory: 1Gi}
