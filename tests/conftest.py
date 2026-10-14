@@ -1,4 +1,6 @@
 import pytest
+import json
+from pathlib import Path
 from fastapi.testclient import TestClient
 
 from fraud_detection.config import settings
@@ -18,3 +20,7 @@ def make_payload(value: float = 0.0) -> dict:
 @pytest.fixture
 def valid_payload() -> dict:
     return make_payload(0.5)
+
+@pytest.fixture
+def good_row() -> dict:
+    return json.loads((Path(__file__).parents[1] / "good.json").read_text())
