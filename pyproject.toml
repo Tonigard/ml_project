@@ -1,6 +1,6 @@
 [project]
 name = "fraud-detection"
-version = "0.1.0"
+version = "0.1.1"
 description = "Детекция фрода"
 requires-python=">=3.11,<3.13"
 
@@ -36,7 +36,7 @@ testpaths = ["tests"]
 markers = ["integration: нужна база данных - адрес в DATABASE_URL"]
 
 [tool.ruff]
-line-length = 150
+line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]

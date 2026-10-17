@@ -5,11 +5,10 @@ from contextlib import asynccontextmanager
 import joblib
 import pandas as pd
 from fastapi import BackgroundTasks, FastAPI, HTTPException
-from pydantic import create_model, BaseModel
+from pydantic import BaseModel, create_model
 
 from fraud_detection import db
 from fraud_detection.config import settings
-
 
 _FeaturesBase = create_model(
     "Features",
@@ -75,4 +74,5 @@ def predict(x: Features, bg: BackgroundTasks) -> Prediction:
 
     fraud = score >= app.state.meta["threshold"]
 
-    return Prediction(score=score, fraud=fraud, model_version = app.state.version, request_id=request_id, latency_ms=latency_ms)
+    return Prediction(score=score, fraud=fraud, model_version = app.state.version,
+                    request_id=request_id, latency_ms=latency_ms)

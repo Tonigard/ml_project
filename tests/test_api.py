@@ -1,8 +1,8 @@
 import uuid
 
 import pytest
-
 from conftest import make_payload
+
 from fraud_detection.service.app import app
 
 URL = "/v1/predict"
