@@ -80,7 +80,7 @@ jobs:
       
       - name: база
         run: |
-          kubectl apply -f k8s/postges.yaml
+          kubectl apply -f k8s/postrges.yaml
           kubectl rollout status deploy/postges --timeout=180s
       
       - name: сервис
