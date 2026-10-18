@@ -22,7 +22,7 @@ spec:
               value: fraud_detection
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretKeyRef: {name: fraud-detection-service, key: POSTGRES_PASSWORD}
+                secretKeyRef: {name: fraud-detection-secrets, key: POSTGRES_PASSWORD}
           readinessProbe:
             exec:
               command: ["pg_isready", "-U", "postgres"]

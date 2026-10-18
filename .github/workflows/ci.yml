@@ -72,11 +72,11 @@ jobs:
 
       - name: подтягиваем секреты
         env:
-          DB_PASSWORD: $ {{ secrets.DB_PASSWORD }}
+          DB_PASSWORD: $ {{secrets.DB_PASSWORD}}
         run: |
           kubectl create secret generic fraud-detection-secrets \
           --from-literal=POSTGRES_PASSWORD="$DB_PASSWORD" \
-          --from-literal=DATABASE_URL="postgresql://postgres:$DB_PASSWORD@postgres:5432/fraud-fraud_detection"
+          --from-literal=DATABASE_URL="postgresql://postgres:$DB_PASSWORD@postgres:5432/fraud_detection"
       
       - name: база
         run: |
@@ -100,7 +100,7 @@ jobs:
           
           sleep 2
 
-          kubectl exec deploy/postgres --psql -U postges -d churn \
+          kubectl exec deploy/postgres --psql -U postges -d fraud_detection \
             -tc "SELECT count(*) FROM predictions" | grep -q 1
       
       - name: диагностика
@@ -109,4 +109,4 @@ jobs:
         run: |
           kubectl get pods -o wide
           kubectl describe deploy/fraud-detection-service | tail -20
-          kubectl logs deploy/churfraud-detectionn-service --tail=30 || true
+          kubectl logs deploy/fraud-detection-service --tail=30 || true
