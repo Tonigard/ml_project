@@ -101,8 +101,9 @@ jobs:
           
           sleep 2
 
-          kubectl exec deploy/postgres --psql -U postges -d fraud_detection \
-            -tc "SELECT count(*) FROM predictions" | grep -q 1
+          kubectl exec deploy/postgres -- psql -U postgres -d fraud_detection \
+          -tc "SELECT count(*) FROM predictions" | grep -q 1
+
       
       - name: диагностика
         if: failure()
