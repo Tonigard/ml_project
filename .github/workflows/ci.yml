@@ -105,7 +105,6 @@ jobs:
             -tc "SELECT count(*) FROM predictions" | grep -q 1
       
       - name: диагностика
-              - name: диагностика
         if: failure()
         run: |
           kubectl get pods -o wide
