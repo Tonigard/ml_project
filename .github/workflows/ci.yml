@@ -50,7 +50,6 @@ jobs:
   deploy:
     needs: build
     # джоба идёт не в облаке GitHub, а на runner в Docker на машине с kind
-    if: github.event_name == 'workflow_dispatch'
     runs-on: [ubuntu-latest]
     permissions: {contents: read, packages: read}
 
