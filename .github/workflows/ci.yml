@@ -65,7 +65,7 @@ jobs:
       - uses: helm/kind-action@v1
         with: {cluster_name: ci} 
 
-            - name: образ в кластер
+      - name: образ в кластер
         run: |
           docker pull "$IMAGE"
           docker tag "$IMAGE" fraud-detection-service:1.0
@@ -76,7 +76,7 @@ jobs:
         env:
           DB_PASSWORD: $ {{secrets.DB_PASSWORD}}
         run: |
-          kubectl create secret generic fraud-detection-secrets \
+          kubectl create secret generic fraud-detection-service \
           --from-literal=POSTGRES_PASSWORD="$DB_PASSWORD" \
           --from-literal=DATABASE_URL="postgresql://postgres:$DB_PASSWORD@postgres:5432/fraud_detection"
       
