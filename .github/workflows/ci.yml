@@ -65,10 +65,12 @@ jobs:
       - uses: helm/kind-action@v1
         with: {cluster_name: ci} 
 
-      - name: образ в кластер
+            - name: образ в кластер
         run: |
           docker pull "$IMAGE"
-          kind load docker-image "$IMAGE" --name ci
+          docker tag "$IMAGE" fraud-detection-service:1.0
+          kind load docker-image fraud-detection-service:1.0 --name ci
+
 
       - name: подтягиваем секреты
         env:
@@ -86,7 +88,6 @@ jobs:
       - name: сервис
         run: |
           kubectl apply -f k8s/
-          kubectl set image deploy/fraud-detection-service api="$IMAGE"
           kubectl rollout status deploy/fraud-detection-service --timeout=120s
 
       - name: smoke
@@ -104,9 +105,9 @@ jobs:
             -tc "SELECT count(*) FROM predictions" | grep -q 1
       
       - name: диагностика
+              - name: диагностика
         if: failure()
-
         run: |
           kubectl get pods -o wide
-          kubectl describe deploy/fraud-detection-service | tail -20
-          kubectl logs deploy/fraud-detection-service --tail=30 || true
+          kubectl describe pods -l app=fraud-detection | tail -40
+          kubectl logs deploy/fraud-detection-service --tail=50 || true
