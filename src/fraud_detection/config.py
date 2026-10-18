@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import ClassVar
 
-from pydantic_settings import BaseSettings
 import joblib
+from pydantic_settings import BaseSettings
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MODEL_PATH = PROJECT_ROOT / "artifacts" / "fraud_detection.pkl"
