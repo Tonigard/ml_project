@@ -51,12 +51,9 @@ jobs:
     needs: build
     # джоба идёт не в облаке GitHub, а на runner в Docker на машине с kind
     if: github.event_name == 'workflow_dispatch'
-    runs-on: [self-hosted, kind]
-    concurrency: {group: deploy-kind}
-    timeout-minutes: 10
+    runs-on: [ubuntu-latest]
     permissions: {contents: read, packages: read}
-    env:
-      KIND_CLUSTER: sem4
+
     steps:
       - uses: actions/checkout@v7
       - run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/fraud-detection-services/sha-${GITHUB_SHA}" >> "$GITHUB_ENV"
@@ -66,19 +63,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: kind, kubectl и доступ к кластеру
-        run: |
-          B=~/.local/bin && mkdir -p $B && echo "$B" >> "$GITHUB_PATH"
-          [ -x $B/kind ] || curl -sSLo $B/kind https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-amd64
-          [ -x $B/kubectl ] || curl -sSLo $B/kubectl https://dl.k8s.io/v1.37.0/bin/linux/amd64/kubectl
-          chmod +x $B/kind $B/kubectl
-          $B/kind export kubeconfig --name "$KIND_CLUSTER" --internal
-          $B/kubectl get nodes
+      - uses: helm/kind-action@v1
+        with: {cluster_name: ci} 
 
       - name: образ в кластер
         run: |
           docker pull "$IMAGE"
-          kind load docker-image "$IMAGE" --name "$KIND_CLUSTER"
+          kind load docker-image "$IMAGE" --name ci
 
       - name: подтягиваем секреты
         env:
