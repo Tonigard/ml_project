@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     model_path: str = str(DEFAULT_MODEL_PATH)
     database_url: str | None = None
     log_level: str = "INFO"
-    fraud_threshold: float
+    fraud_threshold: float = 0.5
     FEATURE_LIST: ClassVar[list[str]] = joblib.load(DEFAULT_MODEL_PATH)["selected_features"]
 
 
