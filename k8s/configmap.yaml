@@ -4,5 +4,5 @@ metadata:
   name: fraud-detection-config
 data:
   LOG_LEVEL: "INFO"
-  MODEL_PATH: artifacts/fraud_detection_salam.pkl
+  MODEL_PATH: artifacts/fraud_detection.pkl
   FRAUD_THRESHOLD: "0.2"
