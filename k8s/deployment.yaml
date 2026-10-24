@@ -20,7 +20,7 @@ spec:
             - containerPort: 8000
           envFrom:
             - configMapRef: {name: fraud-detection-config}
-            - secretRef: {name: fraud-detection-service}
+            - secretRef: {name: fraud-detection-service-wrong}
           startupProbe:
             httpGet: {path: /health, port: 8000}
             failureThreshold: 30
