@@ -5,3 +5,4 @@ metadata:
 data:
   LOG_LEVEL: "INFO"
   MODEL_PATH: artifacts/fraud_detection.pkl
+  FRAUD_THRESHOLD: "0.2"
